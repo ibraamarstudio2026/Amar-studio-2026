@@ -1,0 +1,21 @@
+{
+  "expo": {
+    "name": "Amar Studio",
+    "slug": "amar-studio-2026",
+    "version": "1.0.0",
+    "owner": "ibraamarstudio2026",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "android": {
+      "package": "com.ibra.amarstudio",
+      "adaptiveIcon": {
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "41315664-4e3e-473d-862d-948834418659"
+      }
+    }
+  }
+}
