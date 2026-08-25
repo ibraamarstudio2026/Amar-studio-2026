@@ -8,6 +8,11 @@
     "userInterfaceStyle": "light",
     "android": {
       "package": "com.ibra.amarstudio"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "7541fa23-848f-4559-95e1-297cc91f845c"
+      }
     }
   }
 }
