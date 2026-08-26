@@ -5,19 +5,9 @@
     "version": "1.0.0",
     "owner": "ibraamarstudio2026",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "android": {
-      "package": "com.ibra.amarstudio",
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.png",
-        "backgroundColor": "#ffffff"
-      }
+      "package": "com.ibra.amarstudio"
     },
     "extra": {
       "eas": {
