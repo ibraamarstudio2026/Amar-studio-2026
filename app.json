@@ -5,12 +5,19 @@
     "version": "1.0.0",
     "owner": "ibraamarstudio2026",
     "orientation": "portrait",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "backgroundColor": "#ffffff"
     },
+    "ios": {
+      "supportsTablet": true
+    },
     "android": {
-      "package": "com.ibra.amarstudio"
+      "package": "com.ibra.amarstudio",
+      "adaptiveIcon": {
+        "backgroundColor": "#ffffff"
+      }
     },
     "extra": {
       "eas": {
