@@ -1,54 +1,79 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
-import { Audio } from 'expo-av';
+import React from 'react';
+import { Text } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { ProjectProvider } from './src/context/ProjectContext';
+import { Colors } from './src/theme/Theme';
+
+import RecordingScreen from './src/screens/RecordingScreen';
+import TracksScreen from './src/screens/TracksScreen';
+import InstrumentsScreen from './src/screens/InstrumentsScreen';
+import MixerScreen from './src/screens/MixerScreen';
+import AIScreen from './src/screens/AIScreen';
+
+/**
+ * APP.JS - Mlango wa Kuingia wa Ratqa Studio
+ * --------------------------------------------
+ * Muundo: ProjectProvider inafunika NAVIGATION NZIMA - hivyo
+ * screen ZOTE tano zinapata state MOJA kutoka ProjectContext.
+ * Hakuna screen inayounda AudioEngine au Mixer yake yenyewe -
+ * zote zinashiriki injini MOJA (tazama src/context/ProjectContext.js).
+ */
+
+const Tab = createBottomTabNavigator();
+
+const TAB_ICONS = {
+  Rekodi: '●',
+  Tracks: '🎚',
+  Vyombo: '🎹',
+  Mixer: '🎛',
+  AI: '🤖',
+};
 
 export default function App() {
-  const [recording, setRecording] = useState();
-
-  async function startRecording() {
-    try {
-      const { status } = await Audio.requestPermissionsAsync();
-      if (status === 'granted') {
-        await Audio.setAudioModeAsync({
-          allowsRecordingIOS: true,
-          playsInSilentModeIOS: true,
-        });
-        const { recording } = await Audio.Recording.createAsync(
-          Audio.RecordingOptionsPresets.HIGH_QUALITY
-        );
-        setRecording(recording);
-      } else {
-        Alert.alert("Ruhusa", "Ruhusu mic kurekodi.");
-      }
-    } catch (err) {
-      console.error('Error:', err);
-    }
-  }
-
-  async function stopRecording() {
-    setRecording(undefined);
-    await recording.stopAndUnloadAsync();
-    Alert.alert("AMAR STUDIO", "Sauti imerekodiwa!");
-  }
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>AMAR STUDIO</Text>
-      <TouchableOpacity 
-        style={[styles.btn, recording && styles.active]} 
-        onPress={recording ? stopRecording : startRecording}>
-        <Text style={styles.btnText}>{recording ? "STOP" : "REC"}</Text>
-      </TouchableOpacity>
-      <Text style={styles.status}>{recording ? "Inarekodi..." : "Gusa kuanza"}</Text>
-    </View>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ProjectProvider>
+        <StatusBar style="light" />
+        <NavigationContainer
+          theme={{
+            dark: true,
+            colors: {
+              primary: Colors.accentPrimary,
+              background: Colors.background,
+              card: Colors.surface,
+              text: Colors.textPrimary,
+              border: Colors.border,
+              notification: Colors.accentDanger,
+            },
+          }}
+        >
+          <Tab.Navigator
+            screenOptions={({ route }) => ({
+              headerShown: false,
+              tabBarActiveTintColor: Colors.accentPrimary,
+              tabBarInactiveTintColor: Colors.textMuted,
+              tabBarStyle: {
+                backgroundColor: Colors.surface,
+                borderTopColor: Colors.border,
+              },
+              tabBarIcon: () => (
+                <Text style={{ fontSize: 18 }}>
+                  {TAB_ICONS[route.name] || '•'}
+                </Text>
+              ),
+            })}
+          >
+            <Tab.Screen name="Rekodi" component={RecordingScreen} />
+            <Tab.Screen name="Tracks" component={TracksScreen} />
+            <Tab.Screen name="Vyombo" component={InstrumentsScreen} />
+            <Tab.Screen name="Mixer" component={MixerScreen} />
+            <Tab.Screen name="AI" component={AIScreen} />
+          </Tab.Navigator>
+        </NavigationContainer>
+      </ProjectProvider>
+    </GestureHandlerRootView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#000', alignItems: 'center', justifyContent: 'center' },
-  header: { fontSize: 35, color: 'gold', fontWeight: 'bold', marginBottom: 50 },
-  btn: { width: 100, height: 100, borderRadius: 50, backgroundColor: '#333', justifyContent: 'center', alignItems: 'center', borderWidth: 4, borderColor: '#fff' },
-  active: { borderColor: 'red' },
-  btnText: { color: '#fff', fontWeight: 'bold' },
-  status: { color: '#888', marginTop: 20 }
-});
